@@ -15,7 +15,7 @@ CTrade sTrade; // Trade object used for operations
 color BG_COLOR   = clrBlack;
 color BORDER_CLR = clrAqua;
 //===================== CÀI ĐẶT CHUNG =====================
-input group "CÀI ĐẶT CHUNG"
+input double   Spread = 0.3; // Spread của tài khoản
 input bool     EnableBuy          = true;  // Bật/tắt chiều Buy
 input bool     EnableSell         = true;  // Bật/tắt chiều Sell
 input double   FirstLotBuy        = 0.01;  // Lot đầu Buy
@@ -29,88 +29,15 @@ input double   TotalLossCut       = -100000.0;   // Cắt lỗ theo số tiền 
 input bool     EnableDcaDuong     = true;        // Bật/tắt DCA dương
 input double   DcaDistancePip_D   = 300.0;       // Khoảng cách DCA Dương (Pip)
 input double   DcaMultiplier_D    = 2;         // Hệ số nhân lot DCA Dương
+
 //===================== CÀI ĐẶT DCA ÂM =====================
 input bool     EnableDcaAm        = true;        // Bật/tắt DCA âm
-//===================== Hệ số nhân lot DCA âm =====================
-input group "HỆ SỐ NHÂN LOT DCA ÂM"
-input double Multiplier1 = 1.3;// Hệ số nhân lot nhóm 1
+input double   DcaDistancePip_A   = 300.0;       // Khoảng cách DCA Âm (Pip)
+input double   DcaMultiplier_A    = 2;         // Hệ số nhân lot DCA Âm
 
-input int StartGroup2 = 5; // Lệnh bắt đầu nhóm 2
-input double Multiplier2 = 1.3;// Hệ số nhân lot nhóm 2
-
-input int StartGroup3 = 10; // Lệnh bắt đầu nhóm 3
-input double Multiplier3 = 1.3;// Hệ số nhân lot nhóm 3
-
-input int StartGroup4 = 15;// Lệnh bắt đầu nhóm 4
-input double Multiplier4 = 1.3;// Hệ số nhân lot nhóm 4
-
-input int StartGroup5 = 20;// Lệnh bắt đầu nhóm 5
-input double Multiplier5 = 1.3;// Hệ số nhân lot nhóm 5
-
-input int StartGroup6 = 25;// Lệnh bắt đầu nhóm 6
-input double Multiplier6 = 1.5;// Hệ số nhân lot nhóm 6
-
-input int StartGroup7 = 30;// Lệnh bắt đầu nhóm 7
-input double Multiplier7 = 1.5;// Hệ số nhân lot nhóm 7
-
-input int StartGroup8 = 35;// Lệnh bắt đầu nhóm 8
-input double Multiplier8 = 1.5;// Hệ số nhân lot nhóm 8
-
-input int StartGroup9 = 40;// Lệnh bắt đầu nhóm 9
-input double Multiplier9 = 1.5;// Hệ số nhân lot nhóm 9
-
-input int StartGroup10 = 45;// Lệnh bắt đầu nhóm 10
-input double Multiplier10 = 1.5;// Hệ số nhân lot nhóm 10
-
-//===================== KHOẢNG CÁCH DCA ÂM THEO LỆNH =====================
-input group "KHOẢNG CÁCH DCA ÂM THEO LỆNH"
-input double Distance_L1  = 3;//Quãng giá L1
-input double Distance_L2  = 3;//Quãng giá L2
-input double Distance_L3  = 3;//Quãng giá L3
-input double Distance_L4  = 3;//Quãng giá L4
-input double Distance_L5  = 5;//Quãng giá L5
-input double Distance_L6  = 5;//Quãng giá L6
-input double Distance_L7  = 5;//Quãng giá L7
-input double Distance_L8  = 8;//Quãng giá L8
-input double Distance_L9  = 10;//Quãng giá L9
-input double Distance_L10 = 10;//Quãng giá L10
-
-input double Distance_L11 = 10;//Quãng giá L11
-input double Distance_L12 = 10;//Quãng giá L12
-input double Distance_L13 = 10;//Quãng giá L13
-input double Distance_L14 = 10;//Quãng giá L14
-input double Distance_L15 = 12;//Quãng giá L15
-input double Distance_L16 = 12;//Quãng giá L16
-input double Distance_L17 = 15;//Quãng giá L17
-input double Distance_L18 = 15;//Quãng giá L18
-input double Distance_L19 = 20;//Quãng giá L19
-input double Distance_L20 = 20;//Quãng giá L20
-input double Distance_After20 = 25;//Quãng giá L20+
-//===================== CÀI ĐẶT TỈA LỆNH =====================
-input group "CÀI ĐẶT TỈA LỆNH"
-
-//---- Chốt Buy Đầu Cuối
-input bool   EnableTrimBuy        = true;   // Chốt Buy Đầu Cuối
-input int MinBuyOrdersToTrim = 10;   // Số lệnh BUY tối thiểu để kích hoạt tỉa
-input int    BuyStartTrim         = 5;      // N Lệnh Buy Đầu
-input int    BuyEndTrim           = 1;      // N Lệnh Buy Cuối
-input double BuyProfit    = 10.0;   // Lợi nhuận Buy Đầu Cuối
-
-//---- Chốt Sell Đầu Cuối
-input bool   EnableTrimSell       = true;   // Chốt Sell Đầu Cuối
-input int MinSellOrdersToTrim = 10;   // Số lệnh SELL tối thiểu để kích hoạt tỉa
-input int    SellStartTrim        = 5;      // N Lệnh Sell Đầu
-input int    SellEndTrim          = 1;      // N Lệnh Sell Cuối
-input double SellProfit   = 10.0;   // Lợi nhuận Sell Đầu Cuối
-//===================== TỈA LỆNH ÂM LỚN NHẤT =====================
-input group "TỈA LỆNH ÂM LỚN NHẤT"
-input bool   EnableTrimMaxLoss = false;   // Bật/tắt tỉa lệnh âm lớn nhất
-input double TrimMaxLossProfit = 5.0;     // Mức profit tỉa lệnh âm lớn nhất
 //===================== CÀI ĐẶT HEDGING =====================
-input group "CÀI ĐẶT HEDGING"
 input bool     EnableHedging      = true;        // Bật/tắt Hedging
 input double   HedgingDDTrigger   = -2000.0;     // Hedging khi mức DD đạt ($)
-input group "CÀI ĐẶT BOT TELEGRAM"
 input string BotToken = "8577816937:AAFPSCYCb2pjKJ__74mbMFbTQattCCM1HDY"; // Token
 input string ChatID   = "6487663759";                                     // Chat ID 
 double priceDCA_duong_Buy;
@@ -136,7 +63,6 @@ int OnInit()
 //---
    
 //---
-
    Print("LICENSE OK");
    Notify("Bot da khoi tao thanh cong");
    DeleteAllObjects();
@@ -150,8 +76,15 @@ int OnInit()
    CreateLabel("L8", 190, clrRed);
    CreateLabel("L10",240, clrWhite);
    CreateLabel("L11", 220, clrOrange);
-   if(!CheckLicense() && !MQLInfoInteger(MQL_TESTER))
+         // Nếu đang backtest thì bỏ qua license
+   if(MQLInfoInteger(MQL_TESTER))
    {
+      Print("Tester mode - Skip license check");
+      return(INIT_SUCCEEDED);
+   }
+   if(!CheckLicense())
+   {
+      Print("LICENSE INVALID");
       return(INIT_FAILED);
    }
    return INIT_SUCCEEDED;
@@ -236,15 +169,6 @@ void OnTick()
    if(EnableHedging == true && check == 0){
       CheckHedging();
    }
-   if(EnableTrimBuy && check == 0)
-      TrimBuyOrders();
-      ResetDCABuy();
-   
-   if(EnableTrimSell && check == 0)
-      TrimSellOrders();
-      ResetDCASell();
-   if(EnableTrimMaxLoss && check == 0)
-      TrimMaxLossOrder();
    if(EnableDcaDuong == true && check == 0){
       if(EnableBuy == true){
          CheckDCADuongBuy();
@@ -456,22 +380,14 @@ void CheckDCAAmBuy()
    double PipPerPrice = PipValue();
 
    double diff_price = priceDCA_am_Buy - ask; // GIÁ GIẢM
-   int orderCount = CountOrdersByComment("DCA_AM_BUY");
-   
-   double distance = GetDcaDistanceByOrder(orderCount);
-   
-   double need_price = distance * PipPerPrice;
+   double need_price = DcaDistancePip_A * PipPerPrice;
 
    if(diff_price >= need_price)
    {
-      int orderCount = CountOrdersByComment("DCA_AM_BUY");
-
-      double mul = GetDcaMultiplier(orderCount);
-      
-      double newLot = NormalizeDouble(lotDCA_am_buy * mul,2);
+      double newLot = NormalizeDouble(lotDCA_am_buy * DcaMultiplier_A, 2);
       trade.Buy(newLot, _Symbol, ask, 0, 0, "DCA_AM_BUY");
 
-      lotDCA_am_buy   = lotDCA_am_buy * mul;
+      lotDCA_am_buy   = lotDCA_am_buy * DcaMultiplier_A;
       priceDCA_am_Buy = ask;
    }
 }
@@ -482,21 +398,13 @@ void CheckDCAAmSell()
    double PipPerPrice = PipValue();
 
    double diff_price = bid - priceDCA_am_Sell; // GIÁ TĂNG
-   int orderCount = CountOrdersByComment("DCA_AM_SELL");
-
-   double distance = GetDcaDistanceByOrder(orderCount);
-   
-   double need_price = distance * PipPerPrice;
+   double need_price = DcaDistancePip_A * PipPerPrice;
 
    if(diff_price >= need_price)
    {
-      int orderCount = CountOrdersByComment("DCA_AM_SELL");
-      
-      double mul = GetDcaMultiplier(orderCount);
-      
-      double newLot = NormalizeDouble(lotDCA_am_sell * mul,2);
+      double newLot = NormalizeDouble(lotDCA_am_sell * DcaMultiplier_A, 2);
       trade.Sell(newLot, _Symbol, bid, 0, 0, "DCA_AM_SELL");
-      lotDCA_am_sell   = lotDCA_am_sell * mul;
+      lotDCA_am_sell   = lotDCA_am_sell * DcaMultiplier_A;
       priceDCA_am_Sell = bid;
    }
 }
@@ -908,24 +816,20 @@ void CheckNewDay()
    static int lastDay = -1;
 
    datetime serverTime = TimeCurrent();
-   datetime vnTime = serverTime + 7 * 3600;
+   datetime vnTime     = serverTime + 7 * 3600;
 
    MqlDateTime t;
    TimeToStruct(vnTime, t);
 
-   // reset lúc 07:00 VN
-   if(t.hour == 7 && t.min <= 1)
+   if(lastDay != t.day)
    {
-      if(lastDay != t.day)
-      {
-         lastDay = t.day;
+      lastDay = t.day;
 
-         equityPeak  = AccountInfoDouble(ACCOUNT_EQUITY);
-         maxDrawdown = 0.0;
-         currentDD   = 0.0;
+      equityPeak  = AccountInfoDouble(ACCOUNT_EQUITY);
+      maxDrawdown = 0.0;
+      currentDD   = 0.0;
 
-         Print("===== RESET DD 07:00 VN =====");
-      }
+      Print("===== NEW DAY → RESET DAILY DD =====");
    }
 }
 
@@ -965,361 +869,7 @@ bool CheckLicense()
 
    if(StringFind(response, "OK") >= 0)
       return true;
+
    return false;
 }
 
-void TrimBuyOrders()
-{
-   CTrade trade;
-   trade.SetAsyncMode(true);
-   if(!EnableTrimBuy) return;
-
-   ulong buyTickets[];
-
-   // ===== Lấy tất cả BUY =====
-   for(int i = PositionsTotal()-1; i >= 0; i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-      if(!PositionSelectByTicket(ticket)) continue;
-
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_TYPE) != POSITION_TYPE_BUY) continue;
-
-      int size = ArraySize(buyTickets);
-      ArrayResize(buyTickets, size+1);
-      buyTickets[size] = ticket;
-   }
-
-   int totalBuy = ArraySize(buyTickets);
-
-   if(totalBuy < MinBuyOrdersToTrim)
-      return;
-
-   double totalProfit = 0;
-   ulong closeTickets[];
-
-   // ===== Lệnh đầu (cũ nhất) =====
-   for(int i=0;i<BuyStartTrim && i<totalBuy;i++)
-   {
-      PositionSelectByTicket(buyTickets[totalBuy-1-i]);
-      totalProfit += PositionGetDouble(POSITION_PROFIT);
-
-      int size = ArraySize(closeTickets);
-      ArrayResize(closeTickets,size+1);
-      closeTickets[size] = buyTickets[totalBuy-1-i];
-   }
-
-   // ===== Lệnh cuối (mới nhất) =====
-   for(int i=0;i<BuyEndTrim && i<totalBuy;i++)
-   {
-      PositionSelectByTicket(buyTickets[i]);
-      totalProfit += PositionGetDouble(POSITION_PROFIT);
-
-      int size = ArraySize(closeTickets);
-      ArrayResize(closeTickets,size+1);
-      closeTickets[size] = buyTickets[i];
-   }
-
-   // ===== Nếu đạt profit thì đóng =====
-   if(totalProfit >= BuyProfit)
-   {
-      for(int i=0;i<ArraySize(closeTickets);i++)
-      {
-         trade.PositionClose(closeTickets[i]);
-      }
-
-      Print("Trim BUY executed. Profit = ", totalProfit);
-   }
-}
-
-void TrimSellOrders()
-{
-   CTrade trade;
-   trade.SetAsyncMode(true);
-   if(!EnableTrimSell) return;
-
-   ulong sellTickets[];
-
-   // ===== Lấy tất cả SELL =====
-   for(int i = PositionsTotal()-1; i >= 0; i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-      if(!PositionSelectByTicket(ticket)) continue;
-
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-      if(PositionGetInteger(POSITION_TYPE) != POSITION_TYPE_SELL) continue;
-
-      int size = ArraySize(sellTickets);
-      ArrayResize(sellTickets, size+1);
-      sellTickets[size] = ticket;
-   }
-
-   int totalSell = ArraySize(sellTickets);
-
-   if(totalSell < MinSellOrdersToTrim)
-      return;
-
-   double totalProfit = 0;
-   ulong closeTickets[];
-
-   // ===== Lệnh đầu (cũ nhất) =====
-   for(int i=0;i<SellStartTrim && i<totalSell;i++)
-   {
-      PositionSelectByTicket(sellTickets[totalSell-1-i]);
-      totalProfit += PositionGetDouble(POSITION_PROFIT);
-
-      int size = ArraySize(closeTickets);
-      ArrayResize(closeTickets,size+1);
-      closeTickets[size] = sellTickets[totalSell-1-i];
-   }
-
-   // ===== Lệnh cuối (mới nhất) =====
-   for(int i=0;i<SellEndTrim && i<totalSell;i++)
-   {
-      PositionSelectByTicket(sellTickets[i]);
-      totalProfit += PositionGetDouble(POSITION_PROFIT);
-
-      int size = ArraySize(closeTickets);
-      ArrayResize(closeTickets,size+1);
-      closeTickets[size] = sellTickets[i];
-   }
-
-   // ===== Nếu đạt profit thì đóng =====
-   if(totalProfit >= SellProfit)
-   {
-      for(int i=0;i<ArraySize(closeTickets);i++)
-      {
-         trade.PositionClose(closeTickets[i]);
-      }
-
-      Print("Trim SELL executed. Profit = ", totalProfit);
-   }
-}
-
-int CountOrdersByComment(string comment)
-{
-   int count = 0;
-
-   for(int i = PositionsTotal()-1; i >= 0; i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-      if(!PositionSelectByTicket(ticket))
-         continue;
-
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol)
-         continue;
-
-      string cmt = PositionGetString(POSITION_COMMENT);
-
-      if(cmt == comment)
-         count++;
-   }
-
-   return count;
-}
-double GetDcaMultiplier(int orderCount)
-{
-   if(orderCount >= StartGroup10) return Multiplier10;
-   if(orderCount >= StartGroup9)  return Multiplier9;
-   if(orderCount >= StartGroup8)  return Multiplier8;
-   if(orderCount >= StartGroup7)  return Multiplier7;
-   if(orderCount >= StartGroup6)  return Multiplier6;
-   if(orderCount >= StartGroup5)  return Multiplier5;
-   if(orderCount >= StartGroup4)  return Multiplier4;
-   if(orderCount >= StartGroup3)  return Multiplier3;
-   if(orderCount >= StartGroup2)  return Multiplier2;
-
-   return Multiplier1;
-}
-
-double GetDcaDistanceByOrder(int order)
-{
-   switch(order)
-   {
-      case 1:  return Distance_L1;
-      case 2:  return Distance_L2;
-      case 3:  return Distance_L3;
-      case 4:  return Distance_L4;
-      case 5:  return Distance_L5;
-      case 6:  return Distance_L6;
-      case 7:  return Distance_L7;
-      case 8:  return Distance_L8;
-      case 9:  return Distance_L9;
-      case 10: return Distance_L10;
-
-      case 11: return Distance_L11;
-      case 12: return Distance_L12;
-      case 13: return Distance_L13;
-      case 14: return Distance_L14;
-      case 15: return Distance_L15;
-      case 16: return Distance_L16;
-      case 17: return Distance_L17;
-      case 18: return Distance_L18;
-      case 19: return Distance_L19;
-      case 20: return Distance_L20;
-   }
-
-   // từ lệnh 21 trở đi
-   return Distance_After20;
-}
-
-void TrimMaxLossOrder()
-{
-   CTrade trade;
-   trade.SetAsyncMode(true);
-   double totalPositive = 0.0;
-   double maxLoss = 0.0;
-   ulong maxLossTicket = 0;
-
-   ulong positiveTickets[];
-
-   for(int i = PositionsTotal()-1; i >= 0; i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-      if(!PositionSelectByTicket(ticket)) continue;
-
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
-
-      double profit = PositionGetDouble(POSITION_PROFIT);
-
-      // Lệnh dương
-      if(profit > 0)
-      {
-         totalPositive += profit;
-
-         int size = ArraySize(positiveTickets);
-         ArrayResize(positiveTickets, size+1);
-         positiveTickets[size] = ticket;
-      }
-
-      // tìm lệnh âm lớn nhất
-      if(profit < maxLoss)
-      {
-         maxLoss = profit;
-         maxLossTicket = ticket;
-      }
-   }
-
-   if(maxLossTicket == 0)
-      return;
-
-   double total = totalPositive + maxLoss;
-
-   if(total >= TrimMaxLossProfit)
-   {
-      // đóng lệnh dương
-      for(int i = 0; i < ArraySize(positiveTickets); i++)
-      {
-         trade.PositionClose(positiveTickets[i]);
-      }
-
-      // đóng lệnh âm lớn nhất
-      trade.PositionClose(maxLossTicket);
-
-      Print("Trim Max Loss executed. Total = ", total);
-   }
-}
-
-void ResetDCABuy()
-{
-   double last_duong_price = 0;
-   double last_duong_lot = 0;
-
-   double last_am_price = 0;
-   double last_am_lot = 0;
-
-   for(int i=PositionsTotal()-1;i>=0;i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-
-      if(!PositionSelectByTicket(ticket)) continue;
-      if(PositionGetString(POSITION_SYMBOL)!=_Symbol) continue;
-      if(PositionGetInteger(POSITION_TYPE)!=POSITION_TYPE_BUY) continue;
-
-      string comment = PositionGetString(POSITION_COMMENT);
-      double price = PositionGetDouble(POSITION_PRICE_OPEN);
-      double lot   = PositionGetDouble(POSITION_VOLUME);
-
-      if(comment == "DCA_DUONG_BUY")
-      {
-         if(price > last_duong_price)
-         {
-            last_duong_price = price;
-            last_duong_lot   = lot;
-         }
-      }
-
-      if(comment == "DCA_AM_BUY")
-      {
-         if(price < last_am_price || last_am_price == 0)
-         {
-            last_am_price = price;
-            last_am_lot   = lot;
-         }
-      }
-   }
-
-   if(last_duong_price > 0)
-   {
-      priceDCA_duong_Buy = last_duong_price;
-      lotDCA_duong_buy = last_duong_lot;
-   }
-
-   if(last_am_price > 0)
-   {
-      priceDCA_am_Buy = last_am_price;
-      lotDCA_am_buy = last_am_lot;
-   }
-}
-
-void ResetDCASell()
-{
-   double last_duong_price = 0;
-   double last_duong_lot = 0;
-
-   double last_am_price = 0;
-   double last_am_lot = 0;
-
-   for(int i=PositionsTotal()-1;i>=0;i--)
-   {
-      ulong ticket = PositionGetTicket(i);
-
-      if(!PositionSelectByTicket(ticket)) continue;
-      if(PositionGetString(POSITION_SYMBOL)!=_Symbol) continue;
-      if(PositionGetInteger(POSITION_TYPE)!=POSITION_TYPE_SELL) continue;
-
-      string comment = PositionGetString(POSITION_COMMENT);
-      double price = PositionGetDouble(POSITION_PRICE_OPEN);
-      double lot   = PositionGetDouble(POSITION_VOLUME);
-
-      if(comment == "DCA_DUONG_SELL")
-      {
-         if(price < last_duong_price || last_duong_price==0)
-         {
-            last_duong_price = price;
-            last_duong_lot   = lot;
-         }
-      }
-
-      if(comment == "DCA_AM_SELL")
-      {
-         if(price > last_am_price)
-         {
-            last_am_price = price;
-            last_am_lot   = lot;
-         }
-      }
-   }
-
-   if(last_duong_price > 0)
-   {
-      priceDCA_duong_Sell = last_duong_price;
-      lotDCA_duong_sell = last_duong_lot;
-   }
-
-   if(last_am_price > 0)
-   {
-      priceDCA_am_Sell = last_am_price;
-      lotDCA_am_sell = last_am_lot;
-   }
-}

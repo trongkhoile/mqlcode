@@ -83,7 +83,7 @@ void ProcessSignal(string json)
     if(action == "BUY")
     {
         Print("✅ Mở lệnh BUY: ", _Symbol, " LOT=", DefaultLot);
-        CloseSell();
+        Close();
         double lot = GetNextLot();
         trade.Buy(lot, _Symbol, 0, 0, 0, "EA Buy");
         PlaceBuyStops(lot);
@@ -91,7 +91,7 @@ void ProcessSignal(string json)
     else if(action == "SELL")
     {
         Print("✅ Mở lệnh SELL: ", _Symbol, " LOT=", DefaultLot);
-        CloseOnlyBuy();
+        Close();
         double lot = GetNextLot();
         trade.Sell(lot, _Symbol, 0, 0, 0, "EA Sell");
         PlaceSellStops(lot);
@@ -100,72 +100,6 @@ void ProcessSignal(string json)
     {
         Print("⚠️ Hành động không hợp lệ: ", action);
     }
-}
-
-void CloseSell()
-{
-   CTrade trade;
-   trade.SetAsyncMode(true);
-
-   for(int loop = 0; loop < 3; loop++) // 🔥 lặp 3 lần
-   {
-      // ===== ĐÓNG SELL POSITION =====
-      for(int i = PositionsTotal()-1; i >= 0; i--)
-      {
-         ulong ticket = PositionGetTicket(i);
-         if(ticket == 0) continue;
-
-         if(PositionSelectByTicket(ticket))
-         {
-            if(PositionGetString(POSITION_SYMBOL) != _Symbol)
-               continue;
-
-            if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-            {
-               trade.PositionClose(ticket);
-            }
-         }
-      }
-
-      // ===== XÓA PENDING SELL =====
-      for(int i = OrdersTotal() - 1; i >= 0; i--)
-      {
-         ulong ticket = OrderGetTicket(i);
-         if(ticket == 0) continue;
-
-         if(OrderSelect(ticket))
-         {
-            if(OrderGetString(ORDER_SYMBOL) != _Symbol)
-               continue;
-
-            int type = (int)OrderGetInteger(ORDER_TYPE);
-
-            if(type == ORDER_TYPE_SELL_LIMIT ||
-               type == ORDER_TYPE_SELL_STOP)
-            {
-               trade.OrderDelete(ticket);
-            }
-         }
-      }
-
-      Sleep(200); // 🔥 đợi server xử lý
-   }
-}
-
-bool HasPendingOrders()
-{
-   for(int i=0;i<OrdersTotal();i++)
-   {
-      ulong ticket = OrderGetTicket(i);
-      if(ticket==0) continue;
-
-      if(OrderSelect(ticket))
-      {
-         if(OrderGetString(ORDER_SYMBOL)==_Symbol)
-            return true;
-      }
-   }
-   return false;
 }
 
 void PlaceSellStops(double baseLot)
@@ -450,8 +384,6 @@ void ManagePositions()
 }
 void Close()
 {
-   CTrade trade;
-   trade.SetAsyncMode(true);
    for(int i = PositionsTotal()-1; i >= 0; i--)
    {
       ulong ticket = PositionGetTicket(i);
@@ -463,55 +395,6 @@ void Close()
       ulong ticket = OrderGetTicket(i);
       if(ticket > 0)
          trade.OrderDelete(ticket);
-   }
-}
-
-void CloseOnlyBuy()
-{
-   CTrade trade;
-   trade.SetAsyncMode(true);
-
-   for(int loop=0; loop<3; loop++) // lặp 3 lần cho chắc
-   {
-      // ===== POSITION BUY =====
-      for(int i = PositionsTotal()-1; i >= 0; i--)
-      {
-         ulong ticket = PositionGetTicket(i);
-         if(ticket == 0) continue;
-
-         if(PositionSelectByTicket(ticket))
-         {
-            if(PositionGetString(POSITION_SYMBOL) != _Symbol)
-               continue;
-
-            if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-               trade.PositionClose(ticket);
-         }
-      }
-
-      // ===== PENDING BUY =====
-      for(int i = OrdersTotal()-1; i >= 0; i--)
-      {
-         ulong ticket = OrderGetTicket(i);
-         if(ticket == 0) continue;
-
-         if(OrderSelect(ticket))
-         {
-            if(OrderGetString(ORDER_SYMBOL) != _Symbol)
-               continue;
-
-            int type = (int)OrderGetInteger(ORDER_TYPE);
-
-            if(type == ORDER_TYPE_BUY_LIMIT ||
-               type == ORDER_TYPE_BUY_STOP ||
-               type == ORDER_TYPE_BUY_STOP_LIMIT)
-            {
-               trade.OrderDelete(ticket);
-            }
-         }
-      }
-
-      Sleep(200);
    }
 }
 void OnInit()
